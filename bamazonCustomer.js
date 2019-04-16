@@ -35,6 +35,16 @@ var displayProducts = function(){
         //connection.end();
 	});
 }
+function validateInput(value) {
+	var integer = Number.isInteger(parseFloat(value));
+	var sign = Math.sign(value);
+
+	if (integer && (sign === 1)) {
+		return true;
+	} else {
+		return 'Please enter a whole number.';
+	}
+}
 
 function purchasePrompt(){
 	inquirer.prompt([
@@ -42,12 +52,14 @@ function purchasePrompt(){
 		name: "ID",
 		type: "input",
 		message:"Please enter Item ID you would like to purchase.",
+		validate: validateInput,
 		filter:Number
 	},
 	{
 		name:"Quantity",
 		type:"input",
 		message:"How many items do you wish to purchase?",
+		validate: validateInput,
 		filter:Number
 	},
 
