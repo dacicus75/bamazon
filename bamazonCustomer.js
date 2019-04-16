@@ -22,9 +22,8 @@ var displayProducts = function(){
 	connection.query(query, function(err, res){
 		if(err) throw err;
 		var displayTable = new Table ({
-			head: ["Item ID", "Product Name", "Department Name", 
-			"Price $", "Quantity on Hand"],
-			colWidths: [10,25,25,10,14]
+			head: ["Item ID", "Product Name", "Department Name", "Price $", "Quantity"],
+			colWidths: [10,25,25,10,15]
 		});
 		for(var i = 0; i < res.length; i++){
 			displayTable.push(
@@ -81,4 +80,4 @@ function purchaseOrder(ID, amtNeeded){
 };
 
 
-displayProducts(); 
+//displayProducts(); 
