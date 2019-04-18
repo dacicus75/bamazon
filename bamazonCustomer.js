@@ -76,28 +76,41 @@ function purchaseOrder(ID, amtNeeded){
 	//console.log(typeof ID);
 	connection.query("Select * FROM products WHERE item_id = " + ID, function(err,res){
 		if(err){console.log(err)};
-
+		
 		if(amtNeeded <= res[0].stock_quantity){
 			var totalCost = res[0].price * amtNeeded;
 			console.log("Your order is in stock! ".green +res[0].stock_quantity);
-			console.log("Your total cost for " + amtNeeded + " " +res[0].product_name + " is $" + totalCost + " Thank you for you purchase!");
-			var updateQuantity = res[0].stock_quantity - amtNeeded;
+			console.log("Your total cost for " + amtNeeded + " " +res[0].product_name + " is $" + totalCost.toFixed(2) + " Thank you for you purchase!");
+			//var updateQuantity = res[0].stock_quantity - amtNeeded;
 			//console.log(updateQuantity);
 			
 			connection.query("UPDATE products SET stock_quantity = stock_quantity -  ? WHERE item_id = ?",
-							[amtNeeded, ID], 
-							function(err) {
-								console.log("If you are done shopping please press Ctrl c");
-							}
-			);
+							[amtNeeded, ID], );
 
 		} else {
-			console.log("We apologize, we do not have enough: " .red +res[0].product_name + " to complete your order.");
+			console.log("We apologize, we do not have enough: " .red +res[0].product_name + " to complete your order.".red);
 		};
-        displayProducts();
-        connection.end();
+        continueShopping();
+      
 	});
 };
 
+function continueShopping(){
 
-//displayProducts(); 
+    inquirer.prompt([
+    {
+        type: "confirm",
+        name: "yesNo",
+        message: "Would you like to buy another item?"
+    }
+    ]).then( function(response) {
+
+        if(response.yesNo){
+
+           displayProducts();
+        } else {
+
+           connection.end();
+        }
+	});
+}
