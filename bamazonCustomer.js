@@ -85,7 +85,9 @@ function purchaseOrder(ID, amtNeeded){
 			//console.log(updateQuantity);
 			
 			connection.query("UPDATE products SET stock_quantity = stock_quantity -  ? WHERE item_id = ?",
-							[amtNeeded, ID], );
+							[amtNeeded, ID], function() {
+								console.log('hey it worked');
+							} );
 
 		} else {
 			console.log("We apologize, we do not have enough: " .red +res[0].product_name + " to complete your order.".red);
